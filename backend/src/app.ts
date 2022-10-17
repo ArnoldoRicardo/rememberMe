@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { gql, ApolloServer } from 'apollo-server'
 
-import { findUser, findFriends } from './services/user'
+import { findUser } from './services/user'
 import Query from './queries'
 import Mutation from './mutation'
 

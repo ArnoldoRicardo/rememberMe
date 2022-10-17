@@ -2,36 +2,18 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { UserInputError, AuthenticationError } from 'apollo-server'
 
-import {
-  findUser,
-  addFriendtoUser,
-  newUser,
-  checkFriendship
-} from './services/user'
-import { newPerson, updatePersonNumber, getPerson } from './services/note'
+import { findUser, newUser } from './services/user'
+import { newNota, updateNote, getNote } from './services/note'
 
-export const addPerson = async (
+export const addNote = async (
   root: undefined,
-  { name, phone, city, street }: Person,
+  { content, title }: Note,
   { currentUser }: Context
 ) => {
   if (!currentUser) throw new AuthenticationError('not authenticated')
 
   try {
-    const person = await newPerson(name, phone, city, street)
-    await addFriendtoUser(currentUser.id, person.id)
-    return person
-  } catch (err: any) {
-    throw new UserInputError(err.message)
-  }
-}
-
-export const editNumber = async (
-  root: undefined,
-  { phone, name }: editNumberArgs
-) => {
-  try {
-    return updatePersonNumber(name, phone)
+    return await newNota(content, title)
   } catch (err: any) {
     throw new UserInputError(err.message)
   }
@@ -57,23 +39,6 @@ export const login = async (
   const jwt_secret = process.env.JWT_SECRET ? process.env.JWT_SECRET : 'default'
   return {
     value: jwt.sign(user, jwt_secret)
-  }
-}
-
-export const addAsFriend = async (
-  root: undefined,
-  { name }: Pick<Person, 'name'>,
-  { currentUser }: Context
-) => {
-  try {
-    const person = await getPerson(name)
-    const isFriend = await checkFriendship(currentUser.id, person.id)
-    if (isFriend) return currentUser
-    if (await addFriendtoUser(currentUser.id, person.id)) {
-      return findUser(currentUser.username)
-    }
-  } catch (err: any) {
-    throw new UserInputError(err.message)
   }
 }
 

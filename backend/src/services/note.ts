@@ -17,7 +17,7 @@ export const newNota = async (content: string, title: string) => {
   }
 }
 
-export const updateCreateNote = async (name: string, phone: string) => {
+export const updateNote = async (name: string, phone: string) => {
   const sql = `
         UPDATE note
         SET phone='${phone}'
@@ -52,10 +52,10 @@ export const countNotes = async () => {
   }
 }
 
-export const getNote = async (title: string) => {
+export const getNote = async (id: number) => {
   const sql = `
      --sql
-     select * from public.person where "title" = '${title}' limit 1;
+     select * from public.person where id = ${id} limit 1;
      `
   await connection.connectAsync()
   try {

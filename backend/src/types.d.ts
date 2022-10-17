@@ -1,18 +1,12 @@
-interface Person {
-  name: string
-  phone: string
-  city: string
-  street: string
+interface Note {
+  id: number
+  content: string
+  title: string
 }
 
-interface Address {
-  street?: string
-  city?: string
-}
+type findNoteArgs = Pick<Note, 'id'>
 
-type findPersonArgs = Pick<Person, 'name'>
-
-type editNumberArgs = Pick<Person, 'name' | 'phone'>
+type editNumberArgs = Pick<Note, 'id' | 'content' | 'title'>
 
 interface allPersonArgs {
   hadPhone: boolean
