@@ -1,10 +1,10 @@
 import { UserInputError } from 'apollo-server'
 
-import { countNotes, getAllNotes, getNote } from './services/note'
+import noteService from './services/note'
 
-export const personCount = async (): Promise<Number | undefined> => {
+export const noteCount = async (): Promise<Number | undefined> => {
   try {
-    return await countNotes()
+    return await noteService.countNotes()
   } catch (err: any) {
     throw new UserInputError(err.message)
   }
@@ -12,19 +12,21 @@ export const personCount = async (): Promise<Number | undefined> => {
 
 const allNotes = async (root: undefined, { hadPhone }: allPersonArgs) => {
   try {
-    return getAllNotes(hadPhone)
+    return noteService.getAllNotes(hadPhone)
   } catch (err: any) {
     throw new UserInputError(err.message)
   }
 }
 
-const findNote = async (root: undefined, { id }: findNoteArgs) => {
+const getNote = async (root: undefined, { id }: findNoteArgs) => {
   try {
-    return getNote(id)
+    return noteService.getNote(id)
   } catch (err: any) {
     throw new UserInputError(err.message)
   }
 }
+
+const searchNotes = async () => {}
 
 const me = async (
   root: undefined,
@@ -36,6 +38,8 @@ const me = async (
 
 export default {
   allNotes,
-  findNote,
+  getNote,
+  searchNotes,
+  noteCount,
   me
 }

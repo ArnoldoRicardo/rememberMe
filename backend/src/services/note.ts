@@ -17,11 +17,11 @@ export const newNota = async (content: string, title: string) => {
   }
 }
 
-export const updateNote = async (name: string, phone: string) => {
+export const updateNote = async (id: number, content: string) => {
   const sql = `
         UPDATE note
-        SET phone='${phone}'
-        WHERE name in (${name})
+        SET content='${content}'
+        WHERE id in (${id})
         RETURNING *;
     `
 
@@ -84,4 +84,10 @@ export const getAllNotes = async (hasDelete: boolean) => {
   } finally {
     connection.closeAsync()
   }
+}
+
+export default {
+  countNotes,
+  getAllNotes,
+  getNote
 }

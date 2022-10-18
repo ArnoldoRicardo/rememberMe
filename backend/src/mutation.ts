@@ -7,13 +7,17 @@ import { newNota, updateNote, getNote } from './services/note'
 
 export const addNote = async (
   root: undefined,
-  { content, title }: Note,
+  { id, content }: Note,
   { currentUser }: Context
 ) => {
   if (!currentUser) throw new AuthenticationError('not authenticated')
-
   try {
-    return await newNota(content, title)
+    if (id) {
+      return updateNote(id, content)
+    } else {
+      const title = content.split(/\r?\n/)[0]
+      return newNota(content, title)
+    }
   } catch (err: any) {
     throw new UserInputError(err.message)
   }
@@ -42,8 +46,8 @@ export const login = async (
   }
 }
 
-const updateCreateNote = () => {}
-
 export default {
-  updateCreateNote
+  addNote,
+  createUser,
+  login
 }

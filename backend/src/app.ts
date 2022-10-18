@@ -24,17 +24,14 @@ const typeDefs = gql`
   }
 
   type Query {
+    noteCount: Int
     allNotes(hasDelete: Boolean): [Note]
-    findNote(title: String!): Note
+    getNote(id: Int!): Note
+    searchNotes(text: String!): [Note]
     me: User
   }
   type Mutation {
-    updateCreateNote(
-      name: String!
-      phone: String!
-      street: String!
-      city: String!
-    ): Note
+    addNote(id: Int, content: String!): Note
     createUser(username: String!, password: String!): User
     login(username: String!, password: String!): Token
   }
